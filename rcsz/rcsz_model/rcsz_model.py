@@ -1,15 +1,15 @@
 '''
 '''
 
-from bmcs.time_functions.tfun_pwl_interactive import TFunPWLInteractive
-from ibvpy.api import BCDof
 from traits.api import Instance, List,\
     Property, cached_property, Float
-from traitsui.api import View, Include, VGroup, UItem, Item
+from traitsui.api import View, Include, VGroup, Item
 from view.plot2d import Vis2D, Viz2D
 from view.window import BMCSWindow
 from view.window.bmcs_window import BMCSModel
+
 import matplotlib.patches as patches
+from shear_crack import ShearCrack
 from tloop import TimeLoop
 from view.examples.demo_model.response_tracer import ResponseTracer
 from view.examples.demo_model.tline import TLine
@@ -18,14 +18,8 @@ from view.examples.demo_model.tline import TLine
 class RCShearZoneShapeViz2D(Viz2D):
 
     def plot(self, ax, vot):
-        H = self.vis2d.H
-        L = self.vis2d.L
 
-        rect = patches.Rectangle(
-            (0, 0), L, H, linewidth=1, edgecolor='r', facecolor='green')
-
-        # Add the patch to the Axes
-        ax.add_patch(rect)
+        self.vis2d._plot_shear_zone(ax, vot)
 
 
 class RCShearZoneModel(BMCSModel, Vis2D):
@@ -36,12 +30,12 @@ class RCShearZoneModel(BMCSModel, Vis2D):
 
     tree_node_list = List
 
+    def _tree_node_list_default(self):
+        return [self.sc, self.tline, self.rt]
+
     H = Float(0.3, auto_set=False, enter_set=True)
 
     L = Float(0.3, auto_set=False, enter_set=True)
-
-    def _tree_node_list_default(self):
-        return [self.tline, self.rt, self.bc_dof]
 
     tline = Instance(TLine)
     '''Time range.
@@ -73,10 +67,15 @@ class RCShearZoneModel(BMCSModel, Vis2D):
 
     rt = Instance(ResponseTracer, ())
 
-    bc_dof = Instance(BCDof)
+    sc = Instance(ShearCrack, ())
 
-    def _bc_dof_default(self):
-        return BCDof()  # time_function=TFunPWLInteractive())
+    def _plot_shear_zone(self, ax, vot):
+        H = self.H
+        L = self.L
+        rect = patches.Rectangle(
+            (0, 0), L, H, linewidth=1, edgecolor='black',
+            facecolor='lightgray')
+        ax.add_patch(rect)
 
     viz2d_classes = {
         'shear_zone': RCShearZoneShapeViz2D
@@ -97,4 +96,6 @@ if __name__ == '__main__':
     tv = BMCSWindow(model=model)
     model.rt.add_viz2d('time_profile', 'response tracer #1')
     model.add_viz2d('shear_zone', 'shear zone shape')
+    model.sc.add_viz2d('shear_crack', 'shear crack geometry')
+
     tv.configure_traits()

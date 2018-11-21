@@ -4,14 +4,11 @@ Created on Mar 4, 2017
 @author: rch
 '''
 
-from traits.api import \
-    List, Float, Int, Range, Property,\
-    cached_property
-from traitsui.api import View, UItem, Item, Include, HGroup
-
-import numpy as np
+from traitsui.api import View, Include, HGroup
 from view.plot2d import Vis2D, Viz2D
 from view.ui.bmcs_tree_node import BMCSLeafNode
+
+import numpy as np
 
 
 class TP(Viz2D):
@@ -40,6 +37,7 @@ class ResponseTracer(BMCSLeafNode, Vis2D):
             Include('actions')
         )
     )
+
 
 if __name__ == '__main__':
     bc = ResponseTracer()
