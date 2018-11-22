@@ -51,17 +51,17 @@ class RCShearZoneModel(BMCSModel, Vis2D):
                      time_change_notifier=self.time_changed,
                      )
 
-    def time_changed(self, time):
-        self.ui.viz_sheet.time_changed(time)
+    #def time_changed(self, time):
+        #self.ui.viz_sheet.time_changed(time)
 
-    def time_range_changed(self, tmax):
-        self.tline.max = tmax
-        self.ui.viz_sheet.time_range_changed(tmax)
+    #def time_range_changed(self, tmax):
+        #self.tline.max = tmax
+        #self.ui.viz_sheet.time_range_changed(tmax)
 
-    def set_tmax(self, time):
-        self.time_range_changed(time)
+    #def set_tmax(self, time):
+        #self.time_range_changed(time)
 
-    tloop = Property(Instance(TimeLoop))
+    #tloop = Property(Instance(TimeLoop))
 
     @cached_property
     def _get_tloop(self):
