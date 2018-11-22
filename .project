@@ -3,6 +3,7 @@
 	<name>rc_shear_zone</name>
 	<comment></comment>
 	<projects>
+		<project>bmcs</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

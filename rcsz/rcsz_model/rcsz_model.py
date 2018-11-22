@@ -1,6 +1,11 @@
 '''
 '''
 
+
+
+from ibvpy.api import BCDof
+from bmcs.time_functions.tfun_pwl_interactive import TFunPWLInteractive
+
 from traits.api import Instance, List,\
     Property, cached_property, Float
 from traitsui.api import View, Include, VGroup, Item
